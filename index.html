@@ -33,6 +33,7 @@
             filter: blur(12px) brightness(0.35);
             z-index: -1;
             transform: scale(1.1);
+            will-change: transform;
         }
 
         .glass-dark {
@@ -103,7 +104,7 @@
 </head>
 <body>
 
-    <div class="bg-image"></div>
+    <div class="bg-image" id="bg"></div>
 
     <!-- Container Principal -->
     <div class="w-full max-w-md flex flex-col items-center p-6 z-10">
@@ -111,15 +112,15 @@
         <!-- Perfil -->
         <div class="mt-12 mb-10 text-center">
             <div class="relative w-32 h-32 mb-6 mx-auto rounded-full profile-border overflow-hidden bg-zinc-900">
-                <!-- Certifique-se de que o arquivo perfil.jpg está no seu GitHub -->
+                <!-- No seu GitHub, o ficheiro deve chamar-se perfil.jpg -->
                 <img src="perfil.jpg" alt="Jumper" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 
-                <!-- Fallback: Ícone padrão -->
+                <!-- Fallback caso a imagem não carregue -->
                 <div class="hidden w-full h-full flex items-center justify-center text-white text-5xl bg-zinc-800">
                     <i class="fas fa-user opacity-30"></i>
                 </div>
             </div>
-            <!-- Nome ajustado para "Jumper" com espaçamento elegante -->
+            <!-- Nome simplificado para "Jumper" com espaçamento elegante -->
             <h1 class="text-4xl font-black uppercase italic tracking-[0.3em] text-white">Jumper</h1>
         </div>
 
@@ -128,6 +129,7 @@
             <!-- Destaque Voa (Drone estilo DJI) -->
             <a href="https://youtu.be/PWNALyjmpjs?si=2m39hiol9z03Wi1X" target="_blank" class="flex flex-col items-center group">
                 <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-2 bg-black/40 highlight-circle">
+                    <!-- Ícone de Drone Quadricóptero Moderno -->
                     <svg class="w-10 h-10 text-white fill-current" viewBox="0 0 24 24">
                         <rect x="10" y="9" width="4" height="6" rx="1" />
                         <path d="M10 10L6 7" stroke="currentColor" stroke-width="1.5" />
@@ -144,7 +146,7 @@
                 <span class="text-[10px] uppercase tracking-widest font-bold">Voa</span>
             </a>
             
-            <!-- Link do VSCO -->
+            <!-- Link do VSCO Atualizado -->
             <a href="https://jumpeer.vsco.site" target="_blank" class="flex flex-col items-center group">
                 <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-2 bg-black/40 highlight-circle">
                     <i class="fas fa-camera-retro text-xl group-hover:text-white transition-colors"></i>
