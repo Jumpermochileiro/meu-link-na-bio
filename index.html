@@ -18,6 +18,7 @@
             justify-content: center;
             background-color: #000;
             color: #fff;
+            overflow-x: hidden;
         }
 
         /* Fundo principal com imagem de Paris e desfoque */
@@ -53,38 +54,65 @@
             transform: translateY(-3px) scale(1.02);
         }
 
-        .profile-border {
-            border: 3px solid #fff;
-            padding: 4px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        /* Botão VIP com imagem desfocada interna */
-        .catarse-btn {
+        /* FIX PERFIL: Recorte circular absoluto sem bordas quadradas */
+        .profile-wrapper {
             position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.4s ease;
+            width: 8.5rem;
+            height: 8.5rem;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .catarse-btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
+        .profile-container {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 25px rgba(255,255,255,0.15);
+            background: #111;
+            /* Força clipping em navegadores mobile */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* FIX CATARSE: Recorte blindado e efeito de movimento (Parallax) */
+        .catarse-btn {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden !important;
+            border-radius: 1.5rem;
+            transform: translateZ(0);
+            z-index: 1;
+            isolation: isolate;
+        }
+
+        /* A imagem de fundo agora é um elemento real para podermos mover com JS */
+        .catarse-bg {
+            position: absolute;
+            top: -20%; /* Altura extra para permitir movimento */
+            left: 0;
+            width: 100%;
+            height: 140%; /* Maior que o botão para o parallax */
             background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800');
             background-size: cover;
             background-position: center;
-            filter: blur(4px) brightness(0.5);
+            filter: blur(4px) brightness(0.45);
             z-index: -1;
-            transition: transform 0.6s ease;
-        }
-
-        .catarse-btn:hover::before {
-            transform: scale(1.1);
-            filter: blur(2px) brightness(0.7);
+            will-change: transform;
+            pointer-events: none;
+            /* O JS vai atualizar o translateY deste elemento */
         }
 
         .catarse-btn:hover {
@@ -104,32 +132,28 @@
 </head>
 <body>
 
-    <div class="bg-image" id="bg"></div>
+    <div class="bg-image" id="bg-paris"></div>
 
     <!-- Container Principal -->
     <div class="w-full max-w-md flex flex-col items-center p-6 z-10">
         
         <!-- Perfil -->
         <div class="mt-12 mb-10 text-center">
-            <div class="relative w-32 h-32 mb-6 mx-auto rounded-full profile-border overflow-hidden bg-zinc-900">
-                <!-- No seu GitHub, o ficheiro deve chamar-se perfil.jpg -->
-                <img src="perfil.jpg" alt="Jumper" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                
-                <!-- Fallback caso a imagem não carregue -->
-                <div class="hidden w-full h-full flex items-center justify-center text-white text-5xl bg-zinc-800">
-                    <i class="fas fa-user opacity-30"></i>
+            <div class="profile-wrapper">
+                <div class="profile-container">
+                    <img src="perfil.jpg" alt="Jumper" class="profile-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden w-full h-full items-center justify-center text-white text-5xl bg-zinc-800">
+                        <i class="fas fa-user opacity-30"></i>
+                    </div>
                 </div>
             </div>
-            <!-- Nome simplificado para "Jumper" com espaçamento elegante -->
             <h1 class="text-4xl font-black uppercase italic tracking-[0.3em] text-white">Jumper</h1>
         </div>
 
         <!-- Destaques -->
         <div class="flex justify-center space-x-12 w-full mb-12 opacity-90 text-center">
-            <!-- Destaque Voa (Drone estilo DJI) -->
             <a href="https://youtu.be/PWNALyjmpjs?si=2m39hiol9z03Wi1X" target="_blank" class="flex flex-col items-center group">
                 <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-2 bg-black/40 highlight-circle">
-                    <!-- Ícone de Drone Quadricóptero Moderno -->
                     <svg class="w-10 h-10 text-white fill-current" viewBox="0 0 24 24">
                         <rect x="10" y="9" width="4" height="6" rx="1" />
                         <path d="M10 10L6 7" stroke="currentColor" stroke-width="1.5" />
@@ -146,7 +170,6 @@
                 <span class="text-[10px] uppercase tracking-widest font-bold">Voa</span>
             </a>
             
-            <!-- Link do VSCO Atualizado -->
             <a href="https://jumpeer.vsco.site" target="_blank" class="flex flex-col items-center group">
                 <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-2 bg-black/40 highlight-circle">
                     <i class="fas fa-camera-retro text-xl group-hover:text-white transition-colors"></i>
@@ -162,7 +185,11 @@
                 <i class="fab fa-youtube mr-3 text-lg text-red-500"></i> Assista ao Último Vídeo
             </a>
 
-            <a href="https://www.catarse.me/viagempelaamericadosul" target="_blank" class="catarse-btn w-full py-7 px-6 rounded-3xl flex flex-col items-center justify-center shadow-2xl">
+            <!-- Botão VIP com Parallax Interno -->
+            <a href="https://www.catarse.me/viagempelaamericadosul" target="_blank" class="catarse-btn w-full py-7 px-6 flex flex-col items-center justify-center shadow-2xl" id="vip-trigger">
+                <!-- Imagem de fundo movível -->
+                <div class="catarse-bg" id="parallax-bg"></div>
+                
                 <span class="uppercase tracking-[0.3em] text-[9px] font-black mb-1 text-blue-400">Acesso VIP Polarsteps</span>
                 <span class="text-sm font-bold uppercase text-center mb-2">Notas de Viagem Exclusivas</span>
                 <div class="mt-2 bg-white text-black px-5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-tighter">
@@ -184,11 +211,28 @@
     </div>
 
     <script>
-        // Lógica de Scroll e Animação de Revelação
+        const bgParis = document.getElementById('bg-paris');
+        const parallaxImg = document.getElementById('parallax-bg');
+        const vipBtn = document.getElementById('vip-trigger');
+
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const bg = document.getElementById('bg');
-            if(bg) bg.style.transform = `scale(${1.1 + scrolled * 0.0005})`;
+            
+            // 1. Zoom no fundo de Paris
+            if(bgParis) bgParis.style.transform = `scale(${1.1 + scrolled * 0.0005})`;
+
+            // 2. Movimento dentro do botão Catarse (Parallax Interno)
+            if(vipBtn && parallaxImg) {
+                const rect = vipBtn.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // Calcula a posição do botão em relação ao centro da tela
+                const centerOffset = (rect.top + rect.height/2) - (windowHeight/2);
+                
+                // Move a imagem proporcionalmente ao scroll (intensidade de 0.15)
+                const moveY = centerOffset * 0.15;
+                parallaxImg.style.transform = `translateY(${moveY}px)`;
+            }
         });
     </script>
 </body>
