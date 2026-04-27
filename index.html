@@ -98,13 +98,12 @@
             isolation: isolate;
         }
 
-        /* A imagem de fundo agora é um elemento real para podermos mover com JS */
         .catarse-bg {
             position: absolute;
-            top: -20%; /* Altura extra para permitir movimento */
+            top: -20%; 
             left: 0;
             width: 100%;
-            height: 140%; /* Maior que o botão para o parallax */
+            height: 140%; 
             background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800');
             background-size: cover;
             background-position: center;
@@ -112,7 +111,6 @@
             z-index: -1;
             will-change: transform;
             pointer-events: none;
-            /* O JS vai atualizar o translateY deste elemento */
         }
 
         .catarse-btn:hover {
@@ -152,8 +150,10 @@
 
         <!-- Destaques -->
         <div class="flex justify-center space-x-12 w-full mb-12 opacity-90 text-center">
-            <a href="https://youtu.be/PWNALyjmpjs?si=2m39hiol9z03Wi1X" target="_blank" class="flex flex-col items-center group">
+            <!-- Destaque Voa Atualizado com Link da Playlist -->
+            <a href="https://youtube.com/playlist?list=PLafgNNaNCEUVQGORktLoausaZfiTMVkM2&si=fIfz9nFm-MBhBSDE" target="_blank" class="flex flex-col items-center group">
                 <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-2 bg-black/40 highlight-circle">
+                    <!-- Ícone de Drone -->
                     <svg class="w-10 h-10 text-white fill-current" viewBox="0 0 24 24">
                         <rect x="10" y="9" width="4" height="6" rx="1" />
                         <path d="M10 10L6 7" stroke="currentColor" stroke-width="1.5" />
@@ -185,11 +185,8 @@
                 <i class="fab fa-youtube mr-3 text-lg text-red-500"></i> Assista ao Último Vídeo
             </a>
 
-            <!-- Botão VIP com Parallax Interno -->
             <a href="https://www.catarse.me/viagempelaamericadosul" target="_blank" class="catarse-btn w-full py-7 px-6 flex flex-col items-center justify-center shadow-2xl" id="vip-trigger">
-                <!-- Imagem de fundo movível -->
                 <div class="catarse-bg" id="parallax-bg"></div>
-                
                 <span class="uppercase tracking-[0.3em] text-[9px] font-black mb-1 text-blue-400">Acesso VIP Polarsteps</span>
                 <span class="text-sm font-bold uppercase text-center mb-2">Notas de Viagem Exclusivas</span>
                 <div class="mt-2 bg-white text-black px-5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-tighter">
@@ -203,7 +200,7 @@
 
         </div>
 
-        <!-- Rodapé Minimalista -->
+        <!-- Rodapé -->
         <footer class="mt-24 pb-10 text-center opacity-20">
             <p class="text-[8px] uppercase tracking-[0.5em] font-bold">Jumper • 2026</p>
         </footer>
@@ -218,18 +215,12 @@
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             
-            // 1. Zoom no fundo de Paris
             if(bgParis) bgParis.style.transform = `scale(${1.1 + scrolled * 0.0005})`;
 
-            // 2. Movimento dentro do botão Catarse (Parallax Interno)
             if(vipBtn && parallaxImg) {
                 const rect = vipBtn.getBoundingClientRect();
                 const windowHeight = window.innerHeight;
-                
-                // Calcula a posição do botão em relação ao centro da tela
                 const centerOffset = (rect.top + rect.height/2) - (windowHeight/2);
-                
-                // Move a imagem proporcionalmente ao scroll (intensidade de 0.15)
                 const moveY = centerOffset * 0.15;
                 parallaxImg.style.transform = `translateY(${moveY}px)`;
             }
